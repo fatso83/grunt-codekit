@@ -1,0 +1,1 @@
+python -c 'import codekitlang.compiler;s="/tmp/develop/index.kit";c=codekitlang.compiler.Compiler(framework_paths=[]);c.generate_to_file("ut.dat",s)'
