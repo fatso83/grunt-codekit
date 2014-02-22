@@ -59,6 +59,7 @@ module.exports = function(grunt) {
             return done(false);
           }
 
+          grunt.log.ok('File "' + f.dest + '" created.');
           verbose.ok(format('Exited with code: %d.', code));
           done();
         });
@@ -70,7 +71,7 @@ module.exports = function(grunt) {
       // Write the destination file.
 
       // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+      //grunt.log.writeln('File "' + f.dest + '" created.');
     });
   });
 

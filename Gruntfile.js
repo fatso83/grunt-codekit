@@ -35,15 +35,15 @@ module.exports = function(grunt) {
           //file_suffix : 'kit'
         },
         files: {
-          //'tmp/test01_result.html': ['test/input/test01_input.kit'],
+          'tmp/test01_result.html': ['test/input/test01_input.kit']
         }
       },
     },
 
     // Unit tests.
-    //nodeunit: {
-      //tests: ['test/*_test.js'],
-    //},
+    nodeunit: {
+      tests: ['test/*_test.js']
+    }
 
   });
 
@@ -57,10 +57,9 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  //grunt.registerTask('test', ['clean', 'codekit', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'codekit', 'nodeunit']);
   //grunt.registerTask('test', ['clean', 'codekit']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint']);
-
+  grunt.registerTask('default', ['jshint', 'test']);
 };

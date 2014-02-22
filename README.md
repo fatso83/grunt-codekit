@@ -22,6 +22,8 @@ grunt.loadNpmTasks('grunt-codekit');
 ### Overview
 In your project's Gruntfile, add a section named `codekit` to the data object passed into `grunt.initConfig()`.
 
+### Usage Example
+
 ```js
 grunt.initConfig({
   codekit: {
@@ -38,15 +40,10 @@ grunt.initConfig({
 });
 ```
 
-### Options
 
-#### options.extension
-Not yet implemented
-
-### Usage Examples
-
-### TODO
-- Get the integration tests working
+## TODO
+- Code clean up
+- <del>Get the integration tests working</del>
 - Update the documentation
 - Release a functioning version on the NPM registry
 - Support concatenation of javascript using the @codekit-append/prepend
