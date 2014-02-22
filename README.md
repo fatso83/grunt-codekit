@@ -46,9 +46,15 @@ Not yet implemented
 ### Usage Examples
 
 ### TODO
-- Get the tests working
+- Get the integration tests working
 - Update the documentation
 - Release a functioning version on the NPM registry
+- Support concatenation of javascript using the @codekit-append/prepend
+  directives.
+- Ditto for Prepros by simply making the prepend/append directives
+  configurable.
+- Pure JS implementation of the compiler? Not needed, but any 
+  purists out there are welcome to take a stab at it :)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
