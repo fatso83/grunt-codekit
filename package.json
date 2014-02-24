@@ -1,7 +1,7 @@
 {
   "name": "grunt-codekit",
   "description": "Grunt plugin that compiles Kit files",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/carl-erik.kopseng/grunt-codekit",
   "author": {
     "name": "Carl-Erik Kopseng",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/carl-erik.kopseng/grunt-codekit.git"
+    "url": "git://github.com/fatso83/grunt-codekit.git"
   },
   "bugs": {
-    "url": "https://github.com/carl-erik.kopseng/grunt-codekit/issues"
+    "url": "https://github.com/fatso83/grunt-codekit/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/carl-erik.kopseng/grunt-codekit/blob/master/LICENSE-MIT"
+      "url": "https://github.com/fatso83/grunt-codekit/blob/master/LICENSE-MIT"
     }
   ],
   "engines": {

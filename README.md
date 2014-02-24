@@ -40,8 +40,8 @@ grunt.initConfig({
     },
     your_target: {
       files : {
-        'index.html' : ['index.kit'],
-        'app.html' : ['app.kit'],
+        'index.html' : 'index.kit',
+        'app.html' : 'app.kit',
       }
     },
   },
