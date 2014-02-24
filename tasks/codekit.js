@@ -12,6 +12,7 @@
 module.exports = function(grunt) {
     var cp = require('child_process')
     , format = require('util').format
+    , path = require('path')
     , _ = grunt.util._
     , log = grunt.log
     , verbose = grunt.verbose;
@@ -24,8 +25,13 @@ module.exports = function(grunt) {
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
       , exitCodes = [0]
-      , command = 'python -c \'import codekitlang.compiler;c=codekitlang.compiler.Compiler(framework_paths=[]);c.generate_to_file("%s","%s")\''
-      , rootDirectoryOfModule =  __dirname + "/.."
+      , pythonScript = [
+                        'import codekitlang.compiler',
+                        'c=codekitlang.compiler.Compiler(framework_paths=[])',
+                        'c.generate_to_file("%s","%s")'
+                       ].join(';')
+      , command = 'python -c \'' + pythonScript +  '\''
+      , rootDirectoryOfModule =  path.join(__dirname, "..")
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
@@ -56,25 +62,17 @@ module.exports = function(grunt) {
         if(stderr) { childProcess.stderr.on('data', function (d) { log.error(d); }); }
 
         childProcess.on('exit', function(code) {
-          log.ok(exitCodes);
+          log.debug(exitCodes);
           if (exitCodes.indexOf(code) < 0) {
             log.error(format('Exited with code: %d.', code));
             return done(false);
           }
 
-          grunt.log.ok('File "' + f.dest + '" created.');
+          grunt.log.ok('Compiled Kit file : "' + f.dest);
           verbose.ok(format('Exited with code: %d.', code));
           done();
         });
       });
-
-      // Handle options.
-      //src += options.punctuation;
-
-      // Write the destination file.
-
-      // Print a success message.
-      //grunt.log.writeln('File "' + f.dest + '" created.');
     });
   });
 
