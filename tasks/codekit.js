@@ -25,9 +25,12 @@ module.exports = function(grunt) {
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
       , exitCodes = [0]
       , command = 'python -c \'import codekitlang.compiler;c=codekitlang.compiler.Compiler(framework_paths=[]);c.generate_to_file("%s","%s")\''
+      , rootDirectoryOfModule =  __dirname + "/.."
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
+
+    process.env['PYTHONPATH'] = rootDirectoryOfModule;
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
