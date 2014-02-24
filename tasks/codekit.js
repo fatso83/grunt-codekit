@@ -24,7 +24,7 @@ module.exports = function(grunt) {
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
-      , exitCodes = [0]
+      , exitCodes = [0,127]
       , pythonScript = [
                         'import codekitlang.compiler',
                         'c=codekitlang.compiler.Compiler(framework_paths=[])',
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
     var options = this.options({
           //file_suffix : 'kit'
     });
-    //
+
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
       // Concat specified files.
@@ -62,10 +62,12 @@ module.exports = function(grunt) {
         if(stderr) { childProcess.stderr.on('data', function (d) { log.error(d); }); }
 
         childProcess.on('exit', function(code) {
-          log.debug(exitCodes);
           if (exitCodes.indexOf(code) < 0) {
             log.error(format('Exited with code: %d.', code));
             return done(false);
+          }
+          if(code == 127) {
+            throw new Error("Python does not seem to be installed");
           }
 
           grunt.log.ok('Compiled Kit file : "' + f.dest);

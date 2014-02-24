@@ -1,11 +1,11 @@
 # grunt-codekit
 
-> Grunt plugin to compile *.kit files using the CodeKit language
+> Grunt plugin to compile *.kit files using the <a
+> href="http://incident57.com/codekit/kit.php">Kit language</a>
 
 ## Getting Started
-You need to have Python on your path (meaning installed) for this to work, as this plugin is
-simply wrapping the existing [CodeKit Language implementation in
-Python](https://github.com/gjo/python-codekitlang).
+
+Install the plugin (Python is a required dependency)
 
 ```shell
 npm install grunt-codekit --save-dev
