@@ -1,11 +1,17 @@
 # grunt-codekit
 
-> Grunt plugin to compile *.kit files using the <a
-> href="http://incident57.com/codekit/kit.php">Kit language</a>
+> Grunt plugin for compiling the <a href="http://incident57.com/codekit/kit.php">Kit language</a>
+
+The Kit Language is a simple open source html templating language used in the commercial programs CodeKit and
+PrePros. It imports files into other html files and does simple variable substitution. This plugin makes it possible to compile these files using Grunt.
+
+So far this project only supports compiling the Kit Language, but it
+might be extended in the future to also support the directives from
+CodeKit and PrePros for concatenating javascript files.
 
 ## Getting Started
 
-Install the plugin (Python is a required dependency)
+Install the plugin 
 
 ```shell
 npm install grunt-codekit --save-dev
@@ -16,6 +22,8 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 ```js
 grunt.loadNpmTasks('grunt-codekit');
 ```
+
+Python is a required dependency
 
 ## The "codekit" task
 
@@ -40,9 +48,8 @@ grunt.initConfig({
 });
 ```
 
-
 ## TODO
-- Release a functioning version on the NPM registry
+- <del>Release a functioning version on the NPM registry</del>
 - Support use of framework libraries
 - Support concatenation of javascript using the @codekit-append/prepend directives
 - Making the prepend/append directives user settable (means PrePros support)
@@ -51,4 +58,5 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+0.1 First release. Only compiling of Kit files supported. No framework
+support.
