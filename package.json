@@ -1,7 +1,7 @@
 {
   "name": "grunt-codekit",
   "description": "Grunt plugin to replace basic CodeKit usage of CodeKit language",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/carl-erik.kopseng/grunt-codekit",
   "author": {
     "name": "Carl-Erik Kopseng",
