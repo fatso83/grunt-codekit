@@ -23,8 +23,6 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-codekit');
 ```
 
-Python is a required dependency
-
 ## The "codekit" task
 
 ### Overview
@@ -50,9 +48,11 @@ grunt.initConfig({
 
 ## TODO
 - <del>Release a functioning version on the NPM registry</del>
-- Support use of framework libraries
+- <del>Remove Python dependency (Yay!)</del>
 - Support concatenation of javascript using the @codekit-append/prepend directives
 - Making the prepend/append directives user settable (means PrePros support)
+
+Pull requests are very welcome ;)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
@@ -60,3 +60,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 0.1 First release. Only compiling of Kit files supported. No framework
 support.
+0.2 Removed dependency on Python (yay!)

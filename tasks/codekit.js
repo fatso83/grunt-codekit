@@ -9,73 +9,49 @@
 
 'use strict';
 
+function setCwd(grunt, dir) {
+        grunt.file.setBase(dir);
+        grunt.log.debug("New cwd: " + dir);
+}
+
 module.exports = function(grunt) {
-    var cp = require('child_process')
-    , format = require('util').format
-    , path = require('path')
-    , _ = grunt.util._
-    , log = grunt.log
-    , verbose = grunt.verbose;
+    var cp = require('child_process'),
+        kit = require('node-kit'),
+        fs = require('fs'),
+        path = require('path');
 
   grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language', function() {
 
-  var data = this.data
-      , execOptions = {}
-      , stdout = data.stdout !== undefined ? data.stdout : true
-      , stderr = data.stderr !== undefined ? data.stderr : true
-      , callback = _.isFunction(data.callback) ? data.callback : function() {}
-      , exitCodes = [0,127]
-      , pythonScript = [
-                        'import codekitlang.compiler',
-                        'c=codekitlang.compiler.Compiler(framework_paths=[])',
-                        'c.generate_to_file("%s","%s")'
-                       ].join(';')
-      , command = 'python -c \'' + pythonScript +  '\''
-      , rootDirectoryOfModule =  path.join(__dirname, "..")
-      , childProcess
-      , args = [].slice.call(arguments, 0)
-      , done = this.async();
-
-    process.env['PYTHONPATH'] = rootDirectoryOfModule;
-
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-          //file_suffix : 'kit'
-    });
-
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
-      // Concat specified files.
+      // Concat specified files
 
       var src = f.src.filter(function(filepath) {
         // Warn on and remove invalid source files (if nonull was set).
         if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
+          grunt.log.error('Source file "' + filepath + '" not found.');
           return true;
         } else {
           return true;
         }
       }).map(function(filepath) {
-        var childProcess = cp.exec(format(command,f.dest,filepath), execOptions, callback);
+        var destination = f.dest,
+          html = kit(filepath);
 
-        if(stdout) { childProcess.stdout.on('data', function (d) { log.write(d); }); }
-        if(stderr) { childProcess.stderr.on('data', function (d) { log.error(d); }); }
+        grunt.log.debug("Trying path: " + filepath);
+        html = kit(filepath);
 
-        childProcess.on('exit', function(code) {
-          if (exitCodes.indexOf(code) < 0) {
-            log.error(format('Exited with code: %d.', code));
-            return done(false);
-          }
-          if(code == 127) {
-            throw new Error("Python does not seem to be installed");
-          }
+        // This should not happen, but test anyway
+        if( html === filepath) {
+          grunt.log.warn('Source file "' + filepath + '" not found.');
+          return
+        }
 
-          grunt.log.ok('Compiled Kit file : "' + f.dest);
-          verbose.ok(format('Exited with code: %d.', code));
-          done();
-        });
+        grunt.log.debug("Got html: " + html);
+        grunt.log.debug("Writing file : " + destination);
+        grunt.file.write(destination, html );
       });
     });
   });
-
 };
+
