@@ -25,7 +25,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "preinstall" : "./python_dependency_checker.js",
+    "preinstall" : "node python_dependency_checker.js",
     "test": "grunt test"
   },
   "devDependencies": {
