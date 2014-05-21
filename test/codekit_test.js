@@ -40,12 +40,23 @@ exports.codekit = {
   basic_parsing_works: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/test01_result.html');
+    var actual = grunt.file.read('.tmp/test01_result.html');
     var expected = grunt.file.read('test/expected/test01_expected.html');
-    test.equal(actual, expected, 'should parse file.');
+    test.equal(actual, expected, 'did not parse file correctly.');
     //test.equal(1,1,'basic test');
 
     test.done();
+  },
+
+  variable_embedding: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('.tmp/test02_result.html');
+    var expected = grunt.file.read('test/expected/test02_expected.html');
+    test.equal(actual, expected, 'did not parse variables correctly.');
+
+    test.done();
   }
+
 
 };

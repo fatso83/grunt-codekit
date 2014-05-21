@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         // This should not happen, but test anyway
         if( html === filepath) {
           grunt.log.warn('Source file "' + filepath + '" not found.');
-          return
+          return;
         }
 
         grunt.log.debug("Got html: " + html);

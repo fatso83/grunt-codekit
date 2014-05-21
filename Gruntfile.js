@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp'],
+      tests: ['.tmp'],
     },
 
     // Configuration to be run (and then tested).
@@ -35,7 +35,8 @@ module.exports = function(grunt) {
           //file_suffix : 'kit'
         },
         files: {
-          'tmp/test01_result.html': ['test/input/test01_input.kit']
+          '.tmp/test01_result.html': ['test/input/test01_input.kit'],
+          '.tmp/test02_result.html': ['test/input/test02_input.kit']
         }
       },
     },
@@ -43,6 +44,24 @@ module.exports = function(grunt) {
     // Unit tests.
     nodeunit: {
       tests: ['test/*_test.js']
+    },
+
+    watch: {
+        jshint : {
+                files: ['Gruntfile.js', 'tasks/*.js'],
+                tasks : ['jshint']
+        },
+
+        logic : {
+                files: ['tasks/*.js'],
+                tasks : ['test']
+        },
+
+        test : {
+                files: ['test/**'],
+                tasks : ['test']
+        },
+
     }
 
   });
@@ -54,8 +73,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
-  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
+  // Whenever the "test" task is run, first clean the ".tmp" dir, then run this
   // plugin's task(s), then test the result.
   grunt.registerTask('test', ['clean', 'codekit', 'nodeunit']);
   //grunt.registerTask('test', ['clean', 'codekit']);
