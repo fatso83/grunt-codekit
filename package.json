@@ -2,7 +2,7 @@
   "name": "grunt-codekit",
   "description": "Grunt plugin that compiles Kit files",
   "version": "0.2.1",
-  "homepage": "https://github.com/carl-erik.kopseng/grunt-codekit",
+  "homepage": "https://github.com/fatso83/grunt-codekit",
   "author": {
     "name": "Carl-Erik Kopseng",
     "email": "carlerik@gmail.com",
