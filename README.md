@@ -1,6 +1,5 @@
 # grunt-codekit
-> Grunt plugin for compiling the <a
-href="http://incident57.com/codekit/help.html#kit">Kit language</a>
+> Grunt plugin for compiling the [Kit language](http://incident57.com/codekit/help.html#kit)
 
 [![NPM version](https://badge.fury.io/js/grunt-codekit.svg)](http://badge.fury.io/js/grunt-codekit)
 [![Build Status](https://travis-ci.org/fatso83/grunt-codekit.svg?branch=master)](https://travis-ci.org/fatso83/grunt-codekit)
