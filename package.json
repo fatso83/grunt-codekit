@@ -1,7 +1,7 @@
 {
   "name": "grunt-codekit",
   "description": "Grunt plugin that compiles Kit files",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/carl-erik.kopseng/grunt-codekit",
   "author": {
     "name": "Carl-Erik Kopseng",
@@ -28,7 +28,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-        "node-kit" : "<=0.1.1"
+        "node-kit" : "~0.2"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
