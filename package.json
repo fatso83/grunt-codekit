@@ -1,7 +1,7 @@
 {
   "name": "grunt-codekit",
   "description": "Grunt plugin that compiles Kit files",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "https://github.com/fatso83/grunt-codekit",
   "author": {
     "name": "Carl-Erik Kopseng",
@@ -28,13 +28,16 @@
     "test": "grunt test"
   },
   "dependencies": {
-        "node-kit" : "~0.2"
+    "node-kit": "~0.4"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.6.0",
+    "chai": "^1.9.1",
+    "grunt": "~0.4.2",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt": "~0.4.2"
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "^0.11.0",
+    "load-grunt-tasks": "^0.4.0"
   },
   "peerDependencies": {
     "grunt": "~0.4.2"

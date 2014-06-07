@@ -5,6 +5,7 @@
  * Copyright (c) 2014 Carl-Erik Kopseng
  * Licensed under the MIT license.
  */
+
 /* jshint laxcomma : true*/
 
 'use strict';
