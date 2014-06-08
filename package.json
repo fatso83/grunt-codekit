@@ -28,7 +28,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node-kit": "~0.4"
+    "node-kit": "~0.4",
+    "file-builder": "^0.1.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

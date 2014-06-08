@@ -10,31 +10,33 @@
 
 'use strict';
 
-var nonPartials = function (filepath) {
-    // Check for Kit partials and don’t include them in the compile list
-    // (They will be compiled only via imports and can cause errors if there
-    // are variables that they use that are defined in the parent scope.)
-    var basefilepath = path.basename(filepath);
-    if (basefilepath[0] === "_") {
-        grunt.verbose.ok("Encountered partial " + filepath + " — not compiling it directly.");
-        return false;
-    }
-    return true;
-};
-
+var kit = require('node-kit'),
+    path = require('path');
 
 module.exports = function (grunt) {
-    var kit = require('node-kit'),
-        path = require('path');
 
-    grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language', function () {
+    function nonPartials(filepath) {
+        // Check for Kit partials and don’t include them in the compile list
+        // (They will be compiled only via imports and can cause errors if there
+        // are variables that they use that are defined in the parent scope.)
+        var basefilepath = path.basename(filepath);
+        if (basefilepath[0] === "_") {
+            grunt.verbose.ok("Encountered partial " + filepath + " — not compiling it directly.");
+            return false;
+        }
+        return true;
+    }
+
+    grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language and pre-/appends javascript', function () {
+
+        var done = this.async();
 
         // Iterate over all specified file groups.
         this.files.forEach(function (f) {
             var destination = f.dest;
 
             var compileKitFile = function (filepath) {
-                var               html;
+                var html;
 
                 grunt.log.debug("Trying path: " + filepath);
                 html = kit(filepath);
@@ -60,9 +62,12 @@ module.exports = function (grunt) {
                     , projectOptions = { path: '.' };
 
                 builder.javascript(fileOptions, projectOptions, function (err) {
-                    if(err) {
-                        grunt.log.err(err);
+                    if (err) {
+                        grunt.log.error(err);
+                        done(false);
+                        return;
                     }
+                    done();
                 });
             }
 
@@ -72,13 +77,15 @@ module.exports = function (grunt) {
                     return grunt.file.exists(filepath);
                 })
                 .map(function (filepath) {
-                    console.error(filepath)
+                    console.error(filepath);
                     if (filepath.match(/\.(kit|html)$/)) {
+                        grunt.log.debug('Kit compilation of ' + filepath);
                         compileKitFile(filepath);
                     } else if (filepath.match(/\.js$/)) {
+                        grunt.log.debug('Javascript compilation of ' + filepath);
                         compileJsFile(filepath);
                     } else {
-                        console.warn("No handler for filetype. Unsure what to do with this file: " + filepath);
+                        grunt.log("No handler for filetype. Unsure what to do with this file: " + filepath);
                     }
                 });
         });
