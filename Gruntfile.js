@@ -10,8 +10,12 @@
 
 module.exports = function(grunt) {
 
+  // Autoload tasks from dependencies
+  require('load-grunt-tasks')(grunt);
+
   // Project configuration.
   grunt.initConfig({
+
     jshint: {
       all: [
         'Gruntfile.js',
@@ -31,9 +35,8 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     codekit: {
       defaults: {
-        options: {
-          //file_suffix : 'kit'
-        },
+        options: {},
+
         files: {
           '.tmp/test01_result.html': ['test/input/test01_input.kit'],
           '.tmp/test02_result.html': ['test/input/test02_input.kit'],
@@ -43,13 +46,13 @@ module.exports = function(grunt) {
     },
 
     // Unit tests.
-    nodeunit: {
+    mochaTest: {
       tests: ['test/*_test.js']
     },
 
     watch: {
         jshint : {
-                files: ['Gruntfile.js', 'tasks/*.js'],
+                files: ['Gruntfile.js', 'package.json','tasks/*.js'],
                 tasks : ['jshint']
         },
 
@@ -70,16 +73,9 @@ module.exports = function(grunt) {
   // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-
   // Whenever the "test" task is run, first clean the ".tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'codekit', 'nodeunit']);
-  //grunt.registerTask('test', ['clean', 'codekit']);
+  grunt.registerTask('test', ['clean', 'codekit', 'mochaTest']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

@@ -57,5 +57,6 @@ CodeKit and PrePros for concatenating javascript files.
 - Making the prepend/append directives user settable (means PrePros support)
 
 ## Release History
-0.1.0 First release. Only compiling of Kit files supported. No framework
-0.2.0 Removed dependency on Python (yay!)
+- 0.1.0 First release. Only compiling of Kit files supported. No framework
+- 0.2.0 Removed dependency on Python (yay!)
+- 0.3.0 Partials are now being excluded (thanks, @aral)
