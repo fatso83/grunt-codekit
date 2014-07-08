@@ -54,4 +54,4 @@ The Kit language is a [simple html templating language](https://incident57.com/c
 - 0.1.0 First release. Only compiling of Kit files supported. No framework
 - 0.2.0 Removed dependency on Python (yay!)
 - 0.3.0 Partials are now being excluded (thanks, @aral)
-- 0.4.0 Support for CodeKit/PrePros javascript concatenation directives
+- 0.4.0 Support for CodeKit/PrePros javascript concatenation directives. Includes fixes in `node-kit` to align output with that of CodeKit.
