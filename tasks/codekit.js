@@ -29,7 +29,7 @@ module.exports = function (grunt) {
         return true;
     }
 
-    var compileKitFile = function (filepath, destination) {
+    var compileKitFile = function (filepath, destination, callback) {
         var html;
 
         grunt.log.debug("Trying path: " + filepath);
@@ -43,10 +43,11 @@ module.exports = function (grunt) {
         grunt.log.debug("Got html: " + html);
         grunt.log.debug("Writing file : " + destination);
         grunt.file.write(destination, html);
+        callback();
     };
 
 
-    var compileJsFile = function (filepath, destination) {
+    var compileJsFile = function (filepath, destination, callback) {
         var builder = require('file-builder')
             , fileOptions = {
                 input: filepath,
@@ -54,14 +55,7 @@ module.exports = function (grunt) {
             }
             , projectOptions = { path: '.' };
 
-        builder.javascript(fileOptions, projectOptions, function (err) {
-            if (err) {
-                grunt.log.error(err);
-                done(false);
-                return;
-            }
-            done();
-        });
+        builder.javascript(fileOptions, projectOptions, callback);
     }
 
     grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language and pre-/appends javascript', function () {
@@ -79,21 +73,23 @@ module.exports = function (grunt) {
             return grunt.file.exists(f.src[0]);
         });
 
-
-        files.forEach(function (f) {
+        async.each(files, function (f, callback) {
             var destination = f.dest;
             var filepath = f.src[0];
             console.log(f);
 
             if (filepath.match(/\.(kit|html)$/)) {
                 grunt.log.debug('Kit compilation of ' + filepath);
-                compileKitFile(filepath, destination);
+                compileKitFile(filepath, destination, callback);
             } else if (filepath.match(/\.js$/)) {
                 grunt.log.debug('Javascript compilation of ' + filepath);
-                compileJsFile(filepath, destination);
+                compileJsFile(filepath, destination, callback);
             } else {
-                grunt.log("No handler for filetype. Unsure what to do with this file: " + filepath);
+                callback(new Error("No handler for filetype. Unsure what to do with this file: " + filepath));
             }
+        }, function(err) {
+            if(err) done(err);
+            else done();
         });
     })
 }
