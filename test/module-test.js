@@ -26,22 +26,30 @@ describe('Async handling', function() {
 
     it('should call the callback when compiling html', function(done) {
         grunt.task([
-            { 
+            {
                 src : ['test/input/test01_input.kit'],
                 dest : '.tmp/ignored.out'
             },
         ], done);
     });
 
+    it('should compile by pointing to a directory', function(done) {
+        grunt.task([
+            {
+                src: ['test/input/*.kit'],
+                dest: '.tmp'
+            },
+        ], done);
+    });
+
     it('should call the callback with an error for illegal file names', function(done) {
         grunt.task([
-            { 
+            {
                 src : ['test/input/illegal.file.name'],
                 dest : '.tmp/ignored.out'
             },
         ], function(err) {
-            if(err) done();
-            else done(new Error('Expected error'));
+            should.exist(err);
         });
     });
 
@@ -65,11 +73,12 @@ function fakeGrunt() {
         },
 
         log : {
-            debug : sinon.stub()
+            debug : sinon.stub(),
+            ok : sinon.stub()
         },
 
         task : function(files, done) {
-            
+
             taskFn.call({
                 async : function() {
                     return done;

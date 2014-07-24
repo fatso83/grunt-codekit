@@ -41,6 +41,10 @@ module.exports = function(grunt) {
                     '.tmp/test02_result.html': ['test/input/test02_input.kit'],
                     '.tmp/test03_result.js': ['test/input/test03_input.js']
                 }
+            },
+            glob : {
+                src: ['test/input/*.kit'],
+                dest: '.tmp'
             }
         },
 
@@ -69,6 +73,8 @@ module.exports = function(grunt) {
         }
 
     });
+
+    grunt.loadNpmTasks('grunt-debug-task');
 
     // Actually load this plugin's task(s).
     grunt.loadTasks('tasks');
