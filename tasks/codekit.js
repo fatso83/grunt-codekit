@@ -12,7 +12,6 @@
 
 var kit = require('node-kit')
     , path = require('path')
-    , async = require('async')
     , count
     , done;
 
@@ -29,7 +28,7 @@ module.exports = function (grunt) {
             return false;
         }
         return true;
-    }
+    };
 
     var compileKitFile = function (filepath, destination) {
 
@@ -48,6 +47,7 @@ module.exports = function (grunt) {
     };
 
     var compileJsFile = function (filepath, destination, callback) {
+        callback = callback || function(){};
         var builder = require('file-builder')
             , fileOptions = {
                 input: filepath,
@@ -59,36 +59,27 @@ module.exports = function (grunt) {
     };
 
     grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language', function () {
-
-        done = this.async();
         count = 0;
 
-        // Iterate over all specified file groups.
-        async.each(this.files, function (fileGlob, cb) {
+        this.files.forEach(function(fileGlob) {
             var destination = fileGlob.dest;
             grunt.log.debug("FileGlob: " + fileGlob);
-            var msg;
-            async.each(fileGlob.src, function (filepath, callback) {
+
+            fileGlob.src.forEach(function(filepath) {
                 if (notAPartial(filepath) && grunt.file.exists(filepath)) {
                     if (filepath.match(/\.(kit|html)$/)) {
-                        grunt.log.debug('Kit compilation of ' + filepath);
+                        grunt.log.debug('test compilation of ' + filepath);
                         compileKitFile(filepath, destination);
                     } else if (filepath.match(/\.js$/)) {
                         grunt.log.debug('Javascript compilation of ' + filepath);
-                        compileJsFile(filepath, destination, callback);
+                        compileJsFile(filepath, destination);
                     } else {
-                        callback("No handler for filetype: " + filepath);
+                        grunt.log.error("No handler for filetype: " + filepath);
                     }
                 }
-            }, function(err) {
-                if(err) done(err);
-                else done();
             });
-            cb();
-        }, function(err) {
-            if(err) done(err);
-            else done();
-            grunt.log.ok("Compiled " + count + " files.");
         });
-    })
-}
+
+      grunt.log.ok("Compiled " + count + " files.");
+    });
+};

@@ -9,14 +9,14 @@ var fs = require('fs-extra')
 
 chai.config.includeStack = true;
 
-describe('Async handling', function() {
+describe('File handling', function() {
+
     var grunt;
 
     beforeEach(function(done) {
         grunt = fakeGrunt();
         // register task
         codekit(grunt);
-
         fs.remove('.tmp', done);
     });
 
