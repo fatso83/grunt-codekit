@@ -12,6 +12,7 @@
 
 var kit = require('node-kit')
     , path = require('path')
+    , async = require('async')
     , count
     , done;
 
@@ -30,7 +31,7 @@ module.exports = function (grunt) {
         return true;
     };
 
-    var compileKitFile = function (filepath, destination) {
+    var compileKitFile = function (filepath, destination, nextFile) {
 
         var html,
             outputFilename = (path.basename(destination) === destination) ?
@@ -44,6 +45,7 @@ module.exports = function (grunt) {
         grunt.log.debug("Derived html: " + html);
         grunt.log.debug("Writing to : " + outputFilename);
         grunt.file.write(outputFilename, html );
+        nextFile();
     };
 
     var compileJsFile = function (filepath, destination, callback) {
@@ -61,23 +63,35 @@ module.exports = function (grunt) {
     grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language', function () {
         count = 0;
 
-        this.files.forEach(function(fileGlob) {
+        var done = this.async();
+        async.each(this.files, function(fileGlob, nextGlob) {
             var destination = fileGlob.dest;
             grunt.log.debug("FileGlob: " + fileGlob);
 
-            fileGlob.src.forEach(function(filepath) {
+            async.each(fileGlob.src, function(filepath, nextFile) {
+
                 if (notAPartial(filepath) && grunt.file.exists(filepath)) {
                     if (filepath.match(/\.(kit|html)$/)) {
                         grunt.log.debug('test compilation of ' + filepath);
-                        compileKitFile(filepath, destination);
+                        compileKitFile(filepath, destination, nextFile);
                     } else if (filepath.match(/\.js$/)) {
                         grunt.log.debug('Javascript compilation of ' + filepath);
-                        compileJsFile(filepath, destination);
+                        compileJsFile(filepath, destination, nextFile);
                     } else {
+                        nextFile("No handler for filetype: " + filepath);
                         grunt.log.error("No handler for filetype: " + filepath);
                     }
                 }
+
+            }, function() {
+                // When we are done with all files in this glob
+                // continue to the next glob
+                nextGlob();
             });
+        }, function() {
+            // When we are done with all globs
+            // call done to tell the Grunt task we are done
+            done();
         });
 
       grunt.log.ok("Compiled " + count + " files.");
