@@ -1,6 +1,10 @@
 /*
  * grunt-codekit
+ * forked from
  * https://github.com/fatso83/grunt-codekit
+ *
+ * now, hosted at
+ * git+https://github.com/sroberson/grunt-codekit.git
  *
  * Copyright (c) 2014 Carl-Erik Kopseng
  * Licensed under the MIT license.
@@ -17,6 +21,11 @@ var kit = require('node-kit')
     , done;
 
 module.exports = function (grunt) {
+
+
+    var options = {
+        underscoresAsPartials: true
+    };
 
     // Check for Kit partials and don’t include them in the compile list
     // These are files that start with underscores (i.e. _header.kit)
@@ -61,6 +70,9 @@ module.exports = function (grunt) {
     };
 
     grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language', function () {
+
+        var opts = grunt.util._.defaults(this.options(), options);
+
         count = 0;
 
         var done = this.async();
@@ -70,7 +82,7 @@ module.exports = function (grunt) {
 
             async.each(fileGlob.src, function(filepath, nextFile) {
 
-                if (notAPartial(filepath) && grunt.file.exists(filepath)) {
+                if (((opts.underscoresAsPartials && notAPartial(filepath)) && grunt.file.exists(filepath) || grunt.file.exists(filepath))) {
                     if (filepath.match(/\.(kit|html)$/)) {
                         grunt.log.debug('test compilation of ' + filepath);
                         compileKitFile(filepath, destination, nextFile);
@@ -81,6 +93,8 @@ module.exports = function (grunt) {
                         nextFile("No handler for filetype: " + filepath);
                         grunt.log.error("No handler for filetype: " + filepath);
                     }
+                } else {
+                    nextGlob();
                 }
 
             }, function() {
