@@ -41,6 +41,10 @@ module.exports = function(grunt) {
                     '.tmp/test02_result.html': ['test/input/test02_input.kit'],
                     '.tmp/test03_result.js': ['test/input/test03_input.js']
                 }
+            },
+            glob : {
+                src: ['test/input/*.kit'],
+                dest: '.tmp'
             }
         },
 
@@ -70,11 +74,14 @@ module.exports = function(grunt) {
 
     });
 
+    grunt.loadNpmTasks('grunt-debug-task');
+
     // Actually load this plugin's task(s).
     grunt.loadTasks('tasks');
 
     // Whenever the "test" task is run, first clean the ".tmp" dir, then run this
     // plugin's task(s), then test the result.
+    // grunt.registerTask('test', ['clean', 'codekit:defaults', 'mochaTest']);
     grunt.registerTask('test', ['clean', 'codekit', 'mochaTest']);
 
     // By default, lint and run all tests.
