@@ -12,7 +12,7 @@
 
 var kit = require('node-kit')
 	, path = require('path')
-	, async = require('async')
+	, partialPrefix = "_"
 	, done;
 
 module.exports = function (grunt) {
@@ -22,7 +22,8 @@ module.exports = function (grunt) {
 	// are variables that they use that are defined in the parent scope.)
 	var nonPartials = function (filepath) {
 		var basefilepath = path.basename(filepath);
-		if (basefilepath[0] === "_") {
+
+		if (basefilepath[0] === partialPrefix) {
 			grunt.verbose.ok("Encountered partial " + filepath + " — not compiling it directly.");
 			return false;
 		}
@@ -40,21 +41,7 @@ module.exports = function (grunt) {
 		callback();
 	};
 
-
-	var compileJsFile = function (filepath, destination, callback) {
-		var builder = require('file-builder')
-			, fileOptions = {
-				input        : filepath,
-				customOutput : destination
-			}
-			, projectOptions = { path : '.' };
-
-		builder.javascript(fileOptions, projectOptions, callback);
-	};
-
 	grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language and pre-/appends javascript', function () {
-
-		done = this.async();
 
 		// Iterate over all specified file groups.
 		var files = this.files
@@ -67,7 +54,7 @@ module.exports = function (grunt) {
 				return grunt.file.exists(f.src[0]);
 			});
 
-		async.each(files, function (f, callback) {
+		files.forEach(function (f) {
 			var destination = f.dest;
 			var filepath = f.src[0];
 			console.log(f);
@@ -75,12 +62,8 @@ module.exports = function (grunt) {
 			if (filepath.match(/\.(kit|html)$/)) {
 				grunt.log.debug('Kit compilation of ' + filepath);
 				compileKitFile(filepath, destination, callback);
-			} else if (filepath.match(/\.js$/)) {
-				grunt.log.debug('Javascript compilation of ' + filepath);
-				compileJsFile(filepath, destination, callback);
-			} else {
-				callback(new Error("No handler for filetype. Unsure what to do with this file: " + filepath));
 			}
+
 		}, function (err) {
 			if (err) { done(err); }
 			else { done(); }
