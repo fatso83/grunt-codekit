@@ -35,8 +35,6 @@ module.exports = function (grunt) {
 		codekit   : {
 
 			defaults : {
-				// enablePartials : false
-				// forceOverwrite : false
 				options : {},
 
 				files : {
@@ -49,14 +47,18 @@ module.exports = function (grunt) {
 			globbing_support : {
 				src  : 'test/input/**/*.kit',
 				dest : '.tmp/globbing/'
-			}
+			},
 
+			partials_disabling : {
+				options : { compilePrefixed : true },
+				src : 'test/input/partials_disabling/*.kit',
+				dest : '.tmp/prefixed/'
+			}
 		},
 
 		// Tests.
 		mochaTest : {
-			grunt      : 'test/basic-tests-called-from-Gruntfile.js',
-			unit_tests : ['test/*test.js']
+			grunt      : 'test/basic-tests-called-from-Gruntfile.js'
 		},
 
 		watch : {

@@ -1,7 +1,7 @@
 {
   "name": "grunt-codekit",
   "description": "Grunt plugin that compiles Kit files",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0-beta",
   "homepage": "https://github.com/fatso83/grunt-codekit",
   "author": {
     "name": "Carl-Erik Kopseng",

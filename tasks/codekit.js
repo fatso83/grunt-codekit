@@ -21,11 +21,21 @@ module.exports = function (grunt) {
 	// Check for Kit partials and don’t include them in the compile list
 	// (They will be compiled only via imports and can cause errors if there
 	// are variables that they use that are defined in the parent scope.)
-	var not = function (predicate) { return function () { return !predicate.apply(null, arguments); } };
+	var not = function (predicate) { return function () { return !predicate.apply(null, arguments); }; };
+	var and = function (predicates) {
+		return function () {
+			var bool = true, index = 0, len = predicates.length, predicate;
+			while (bool && index < len) {
+				predicate = predicates[index++];
+				bool = bool && predicate.apply(null, arguments);
+			}
+			return bool;
+		};
+	};
 	var isPartial = function (filepath) { return path.basename(filepath)[0] === partialPrefix; };
 	var isGlob = function (filename) { return reGlob.test(filename); };
 	var isKitFile = function (f) { return reKitHtml.test(f); };
-	var fileExists = function(f) { return grunt.file.exists(f); };
+	var fileExists = function (f) { return grunt.file.exists(f); };
 
 	var createFilename = function (destination, filepath) {
 		return path.resolve(destination, path.basename(filepath, '.kit') + '.html');
@@ -44,20 +54,25 @@ module.exports = function (grunt) {
 	grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language and pre-/appends javascript', function () {
 
 		// Iterate over all specified file groups.
-		var files = this.files;
+		var files = this.files
+			, options = this.options();
 
-		files.forEach(function (file, i) {
+		files.forEach(function (file) {
 
 			// if file is a globbing pattern, then src might be a list of several files
 			// otherwise file.src will contain a list of one file
 			var currentSetOfInputFiles = file.src,
 				destination = file.dest,
+				predicates = [],
 				outputFilename;
 
+			if (!options.compilePrefixed) {
+				predicates.push(not(isPartial));
+			}
+			predicates.push(isKitFile, fileExists);
+
 			currentSetOfInputFiles
-				.filter(not(isPartial))
-				.filter(isKitFile)
-				.filter(fileExists)
+				.filter(and(predicates))
 				.forEach(function (filepath) {
 					outputFilename = isGlob(file.orig.src[0]) ?
 						createFilename(destination, filepath)

@@ -6,9 +6,9 @@ var fs = require('fs')
 	, read = fs.readFileSync
 	, exists = fs.existsSync
 	, readToString = function (f) { return read(f).toString(); }
-	, chai = require('chai')
-	, should = chai.should();
+	, chai = require('chai');
 
+chai.should();
 chai.config.includeStack = true;
 
 describe('Basic functionality tests', function () {
@@ -32,8 +32,16 @@ describe('Basic functionality tests', function () {
 			, files = ['test01_input.html', 'subfile1.html', 'subfile2.html'];
 
 		files.forEach(function(file) {
-			exists(path.join(globbingOutputDestination, file)).should.eql(true);
+			exists(path.join(globbingOutputDestination, file)).should.equal(true);
 		});
-	})
+	});
+
+	it('should normally not compile partials', function () {
+		exists('.tmp/_variables.html').should.equal(false);
+	});
+
+	it('should compile partials when configured to do so', function () {
+		exists('.tmp/prefixed/_prefixed.html').should.equal(true);
+	});
 
 });
