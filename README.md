@@ -25,7 +25,21 @@ The plugin supports compiling templates written using the Kit language of CodeKi
 and long form when specifying input and output destination. You can use both short form and long form when specifying 
 input files and output destinations.
 
-### Usage Example
+Using short form (see below), the output files will be placed in the `dest` directory
+and have the same names as the input files, just with a `.html` extension. When using
+the long form you can explicitly specify the full name and path of each output file.
+
+There is nothing in the way of mixing and matching the two styles.
+
+#### Configuration options
+As with all Grunt plugins, you can specify an `options` object, either for all tasks 
+or for each task. There is currently just one option:
+
+- `compilePrefixed` - Files starting with an underscore (such as `_header.kit`), 
+so called partials, are normally not considered for compilation. By setting this option
+ to true you can override this setting and still compile these files (default `false`).
+
+#### Example configuration
 
 ```js
 grunt.initConfig({
@@ -40,11 +54,20 @@ grunt.initConfig({
       files : {
         'build/index.html' : '/templates/my_special_index.kit'
       }
+    },
+    
+    build_with_underscored_files : {
+        options : { compilePrefixed : true },
+        files : {
+            'build/about.html : '_about.kit',
+            'build/index.html : '_index.kit'
+        }
     }
   },
 });
 ```
-#### Example usage: embedding critical path css in the head section
+
+### Example usage: embedding critical path css in the head section
 Using [Penthouse](https://github.com/fatso83/grunt-penthouse) one can generate a file containing the 
 critical path css, which can *dramatically* impact your site's speed and therefore your page ranking in Google.
 
