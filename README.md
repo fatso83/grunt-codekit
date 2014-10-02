@@ -58,8 +58,8 @@ grunt.initConfig({
     build_with_underscored_files : {
         options : { compilePrefixed : true },
         files : {
-            'build/about.html : '_about.kit',
-            'build/index.html : '_index.kit'
+            'build/about.html' : '_about.kit',
+            'build/index.html' : '_index.kit'
         }
     }
   },
