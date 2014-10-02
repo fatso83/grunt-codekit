@@ -13,60 +13,73 @@
 var kit = require('node-kit')
 	, path = require('path')
 	, partialPrefix = "_"
-	, done;
+	, reKitHtml = /\.(kit|html)$/
+	, reGlob = /.*\*.*/;
 
 module.exports = function (grunt) {
 
 	// Check for Kit partials and don’t include them in the compile list
 	// (They will be compiled only via imports and can cause errors if there
 	// are variables that they use that are defined in the parent scope.)
-	var nonPartials = function (filepath) {
-		var basefilepath = path.basename(filepath);
+	var not = function (predicate) { return function () { return !predicate.apply(null, arguments); }; };
+	var and = function (predicates) {
+		return function () {
+			var bool = true, index = 0, len = predicates.length, predicate;
+			while (bool && index < len) {
+				predicate = predicates[index++];
+				bool = bool && predicate.apply(null, arguments);
+			}
+			return bool;
+		};
+	};
+	var isPartial = function (filepath) { return path.basename(filepath)[0] === partialPrefix; };
+	var isGlob = function (filename) { return reGlob.test(filename); };
+	var isKitFile = function (f) { return reKitHtml.test(f); };
+	var fileExists = function (f) { return grunt.file.exists(f); };
 
-		if (basefilepath[0] === partialPrefix) {
-			grunt.verbose.ok("Encountered partial " + filepath + " — not compiling it directly.");
-			return false;
-		}
-		return true;
+	var createFilename = function (destination, filepath) {
+		return path.resolve(destination, path.basename(filepath, '.kit') + '.html');
 	};
 
-	var compileKitFile = function (filepath, destination, callback) {
+	var compileKitFile = function (filepath, outputFilename) {
 		var html;
 
-		grunt.log.debug("Compiling Kit file : " + filepath);
+		grunt.log.debug("Compiling Kit file : " + outputFilename);
 		html = kit(filepath);
 
-		grunt.log.debug("Writing file : " + destination);
-		grunt.file.write(destination, html);
-		callback();
+		grunt.log.debug("Writing file : " + outputFilename);
+		grunt.file.write(outputFilename, html);
 	};
 
 	grunt.registerMultiTask('codekit', 'Compiles files using the open CodeKit language and pre-/appends javascript', function () {
 
 		// Iterate over all specified file groups.
 		var files = this.files
-			.filter(function (f) {
-				// remove partials
-				return nonPartials(f.src[0]);
-			})
-			.filter(function (f) {
-				// Remove invalid source files
-				return grunt.file.exists(f.src[0]);
-			});
+			, options = this.options();
 
-		files.forEach(function (f) {
-			var destination = f.dest;
-			var filepath = f.src[0];
-			console.log(f);
+		files.forEach(function (file) {
 
-			if (filepath.match(/\.(kit|html)$/)) {
-				grunt.log.debug('Kit compilation of ' + filepath);
-				compileKitFile(filepath, destination, callback);
+			// if file is a globbing pattern, then src might be a list of several files
+			// otherwise file.src will contain a list of one file
+			var currentSetOfInputFiles = file.src,
+				destination = file.dest,
+				predicates = [],
+				outputFilename;
+
+			if (!options.compilePrefixed) {
+				predicates.push(not(isPartial));
 			}
+			predicates.push(isKitFile, fileExists);
 
-		}, function (err) {
-			if (err) { done(err); }
-			else { done(); }
+			currentSetOfInputFiles
+				.filter(and(predicates))
+				.forEach(function (filepath) {
+					outputFilename = isGlob(file.orig.src[0]) ?
+						createFilename(destination, filepath)
+						: destination;
+
+					compileKitFile(filepath, outputFilename);
+				});
 		});
 	});
 };
