@@ -21,12 +21,11 @@ grunt.loadNpmTasks('grunt-codekit');
 
 ### Choose files to compile
 
-The plugin supports compiling templates written using the Kit language of CodeKit&trade. You can use both short form
-and long form when specifying input and output destination. You can use both short form and long form when specifying 
-input files and output destinations.
+The plugin supports compiling templates written using the Kit language of CodeKit&trade;. You can use both short form
+and long form when specifying input and output destination.
 
 Using short form (see below), the output files will be placed in the `dest` directory
-and have the same names as the input files, just with a `.html` extension. When using
+and have the same names as the input files, only using a `.html` extension. When using
 the long form you can explicitly specify the full name and path of each output file.
 
 There is nothing in the way of mixing and matching the two styles.
@@ -67,9 +66,9 @@ grunt.initConfig({
 });
 ```
 
-### Example usage: embedding critical path css in the head section
+### Example usage: embedding critical path CSS
 Using [Penthouse](https://github.com/fatso83/grunt-penthouse) one can generate a file containing the 
-critical path css, which can *dramatically* impact your site's speed and therefore your page ranking in Google.
+critical path css, which can *dramatically* impact your site's [perceived speed](http://addyosmani.com/blog/tag/critical-path-css/) and your page ranking in Google.
 
 You still need a way of embedding that CSS, though, and one way of doing that is using the Kit language. An 
 example on how this kit file might look is as follows
