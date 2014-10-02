@@ -1,26 +1,39 @@
 /*  Expected to be run after grunt:codekit */
 'use strict';
 
-var read = require('fs').readFileSync
-  , chai = require('chai')
-  , should = chai.should();
+var fs = require('fs')
+	, path = require('path')
+	, read = fs.readFileSync
+	, exists = fs.existsSync
+	, readToString = function (f) { return read(f).toString(); }
+	, chai = require('chai')
+	, should = chai.should();
 
 chai.config.includeStack = true;
 
 describe('Basic functionality tests', function () {
 
-  it('should do basic basic parsing', function() {
+	it('should do basic basic parsing', function () {
 
-    var actual = read('.tmp/test01_result.html').toString();
-    var expected = read('test/expected/test01_expected.html').toString();
-    actual.should.eql(expected);
-  });
+		var actual = readToString('.tmp/test01_result.html');
+		var expected = readToString('test/expected/test01_expected.html');
+		actual.should.eql(expected);
+	});
 
-  it('should do variable embedding', function() {
+	it('should do variable embedding', function () {
 
-    var actual = read('.tmp/test02_result.html').toString();
-    var expected = read('test/expected/test02_expected.html').toString();
-    actual.should.eql(expected);
-  });
+		var actual = readToString('.tmp/test02_result.html');
+		var expected = readToString('test/expected/test02_expected.html');
+		actual.should.eql(expected);
+	});
+
+	it('should support globbing file patterns', function () {
+		var globbingOutputDestination = '.tmp/globbing'
+			, files = ['test01_input.html', 'subfile1.html', 'subfile2.html'];
+
+		files.forEach(function(file) {
+			exists(path.join(globbingOutputDestination, file)).should.eql(true);
+		});
+	})
 
 });
