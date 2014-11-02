@@ -27,6 +27,13 @@ describe('Basic functionality tests', function () {
 		actual.should.eql(expected);
 	});
 
+	it('should bring imported variables into the same scope', function () {
+
+		var actual = readToString('.tmp/test03_result.html');
+		var expected = readToString('test/expected/test03_expected.html');
+		actual.should.eql(expected);
+	});
+
 	it('should support globbing file patterns', function () {
 		var globbingOutputDestination = '.tmp/globbing'
 			, files = ['test01_input.html', 'subfile1.html', 'subfile2.html'];

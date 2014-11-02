@@ -28,7 +28,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node-kit": "~0.6"
+    "node-kit": "git://github.com/Lukx/node-kit.git#patch-1"
   },
   "devDependencies": {
     "chai": "^1.9.1",
