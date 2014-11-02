@@ -39,8 +39,7 @@ module.exports = function (grunt) {
 
 				files : {
 					'.tmp/test01_result.html' : ['test/input/test01_input.kit'],
-					'.tmp/test02_result.html' : ['test/input/test02_input.kit'],
-					'.tmp/test03_result.js'   : ['test/input/test03_input.js']
+					'.tmp/test02_result.html' : ['test/input/test02_input.kit']
 				}
 			},
 
