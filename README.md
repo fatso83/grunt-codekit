@@ -1,5 +1,6 @@
 # grunt-codekit
-> Grunt plugin for compiling [Kit](http://incident57.com/codekit/help.html#kit) files and concatenating javascript
+> Grunt plugin for compiling [Kit](http://incident57.com/codekit/help.html#kit) files
+> Can be used to embed files or concatenate files
 
 [![NPM version](https://badge.fury.io/js/grunt-codekit.svg)](http://badge.fury.io/js/grunt-codekit)
 [![Build Status](https://travis-ci.org/fatso83/grunt-codekit.svg?branch=master)](https://travis-ci.org/fatso83/grunt-codekit)
@@ -37,6 +38,10 @@ or for each task. There is currently just one option:
 - `compilePrefixed` - Files starting with an underscore (such as `_header.kit`), 
 so called partials, are normally not considered for compilation. By setting this option
  to true you can override this setting and still compile these files (default `false`).
+
+Do remember that Grunt has a [lot of fancy ways of doing file system manipulation]
+(http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically) for you
+
 
 #### Example configuration
 
