@@ -61,8 +61,17 @@ grunt.initConfig({
             'build/about.html' : '_about.kit',
             'build/index.html' : '_index.kit'
         }
+    },
+
+    // see http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically
+    dynamic_file_object: {
+        files: [{
+            expand: true,
+            cwd: 'sources',
+            src: ['**/*.kit'],
+            dest: 'build',
+            ext: '.html'
     }
-  },
 });
 ```
 

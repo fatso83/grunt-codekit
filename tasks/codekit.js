@@ -33,7 +33,12 @@ module.exports = function (grunt) {
 		};
 	};
 	var isPartial = function (filepath) { return path.basename(filepath)[0] === partialPrefix; };
-	var isGlob = function (filename) { return reGlob.test(filename); };
+	var isUnexpandedGlob = function (file) {
+        var filename = file.orig.src[0],
+            expand = file.orig.expand;
+
+        return reGlob.test(filename) && !expand;
+    };
 	var isKitFile = function (f) { return reKitHtml.test(f); };
 	var fileExists = function (f) { return grunt.file.exists(f); };
 
@@ -74,7 +79,7 @@ module.exports = function (grunt) {
 			currentSetOfInputFiles
 				.filter(and(predicates))
 				.forEach(function (filepath) {
-					outputFilename = isGlob(file.orig.src[0]) ?
+					outputFilename = isUnexpandedGlob(file) ?
 						createFilename(destination, filepath)
 						: destination;
 

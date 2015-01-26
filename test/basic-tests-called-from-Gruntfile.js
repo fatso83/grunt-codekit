@@ -51,4 +51,10 @@ describe('Basic functionality tests', function () {
 		exists('.tmp/prefixed/_prefixed.html').should.equal(true);
 	});
 
+    // issue #14
+    it('should support dynamic file objects', function () {
+        exists('.tmp/dynamic/subdir1/subfile1.html').should.equal(true);
+        exists('.tmp/dynamic/subdir1/subfile3.html').should.equal(true);
+        exists('.tmp/dynamic/subdir1/subdir2/subfile2.html').should.equal(true);
+    });
 });
