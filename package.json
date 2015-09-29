@@ -28,7 +28,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node-kit": "^0.7.0"
+    "node-kit": "jeremyworboys/node-kit#master"
   },
   "devDependencies": {
     "chai": "^1.9.1",

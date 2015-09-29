@@ -4,11 +4,12 @@
 
 [![NPM version](https://badge.fury.io/js/grunt-codekit.svg)](http://badge.fury.io/js/grunt-codekit)
 [![Build Status](https://travis-ci.org/fatso83/grunt-codekit.svg?branch=master)](https://travis-ci.org/fatso83/grunt-codekit)
-[![Gittip](http://img.shields.io/gittip/fatso83.svg)](https://www.gittip.com/fatso83/)
+![PR time](http://issuestats.com/github/fatso83/grunt-codekit/badge/pr?style=flat)]
+![Issue time](http://issuestats.com/github/fatso83/grunt-codekit/badge/issue?style=flat)]
 
 ## Getting Started
 
-###Install the plugin
+### Install the plugin
 
 ```shell
 npm install grunt-codekit --save-dev
